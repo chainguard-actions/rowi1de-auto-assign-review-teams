@@ -1,31 +1,21 @@
-name: Test include-draft flag
+name: Test include-draft flag - no PR context
 on:
   workflow_dispatch:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_EVENT_NAME: pull_request
-      GITHUB_REF: refs/pull/1/merge
-      GITHUB_HEAD_REF: draft-feature-branch
-      GITHUB_BASE_REF: main
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - name: Run action with include-draft enabled
+
+      - name: Run action with include-draft enabled (no PR context)
         id: action
         uses: .
         with:
           repo-token: ${{ github.token }}
-          teams: "team-reviewers"
+          teams: "my-team"
           include-draft: "true"
-        continue-on-error: true
-      - name: Assert action ran (outcome is success or failure, not skipped)
-        env:
-          OUTCOME: ${{ steps.action.outcome }}
+
+      - name: Assert action completed without failure
         run: |
-          echo "outcome: $OUTCOME"
-          if [ "$OUTCOME" = "skipped" ]; then
-            echo "FAIL: action was skipped, expected it to run"
-            exit 1
-          fi
-          echo "PASS: action ran with outcome=$OUTCOME"
+          echo "Action completed successfully with include-draft=true and no PR context"
+          echo "PASS: action exited 0 as expected when no PR context is present"

@@ -1,4 +1,4 @@
-name: Test skip-with-manual-reviewers input - no PR context
+name: Test basic usage - no PR context
 on:
   workflow_dispatch:
 jobs:
@@ -7,15 +7,14 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Run action with skip-with-manual-reviewers set (no PR context)
+      - name: Run action with required inputs (no PR context)
         id: action
         uses: .
         with:
           repo-token: ${{ github.token }}
           teams: "my-team"
-          skip-with-manual-reviewers: "2"
 
       - name: Assert action completed without failure
         run: |
-          echo "Action completed successfully with skip-with-manual-reviewers=2 and no PR context"
+          echo "Action completed successfully with no PR context"
           echo "PASS: action exited 0 as expected when no PR context is present"

@@ -1,4 +1,4 @@
-name: Test skip-with-manual-reviewers input - no PR context
+name: Test pick-one-from-persons-or-team with persons - no PR context
 on:
   workflow_dispatch:
 jobs:
@@ -7,15 +7,17 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Run action with skip-with-manual-reviewers set (no PR context)
+      - name: Run action with pick-one-from-persons-or-team enabled (no PR context)
         id: action
         uses: .
         with:
           repo-token: ${{ github.token }}
           teams: "my-team"
-          skip-with-manual-reviewers: "2"
+          persons: "user1, user2, user3"
+          pick-one-from-persons-or-team: "true"
+          org: "my-org"
 
       - name: Assert action completed without failure
         run: |
-          echo "Action completed successfully with skip-with-manual-reviewers=2 and no PR context"
+          echo "Action completed successfully with pick-one-from-persons-or-team=true and no PR context"
           echo "PASS: action exited 0 as expected when no PR context is present"
